@@ -42,72 +42,49 @@
         <p class="section-subtitle">Tell us about your day and we'll craft the perfect meal plan for you.</p>
 
         <form id="meal-plan-form" class="meal-form glass-card" aria-label="Meal plan generator form" novalidate>
-          <!-- Day Context -->
-          <div class="form-group">
-            <label for="day-context" class="form-label">
-              <span class="form-label__icon" aria-hidden="true">📅</span>
-              What's your day like?
-            </label>
-            <textarea
-              id="day-context"
-              name="day_context"
-              class="form-control"
-              rows="3"
-              maxlength="1000"
-              placeholder="Describe your day… e.g., Busy workday, need quick healthy meals"
-              aria-label="Describe your day context for meal planning"
-              aria-required="true"
-              required
-            ></textarea>
-            <span class="form-hint" id="day-context-hint">
-              <span id="day-context-count">0</span>/1000 characters
-            </span>
-          </div>
-
-          <!-- Dietary Preferences -->
-          <div class="form-group">
-            <label for="dietary-preferences" class="form-label">
-              <span class="form-label__icon" aria-hidden="true">🥗</span>
-              Dietary Preferences
-            </label>
-            <input
-              type="text"
-              id="dietary-preferences"
-              name="dietary_preferences"
-              class="form-control"
-              maxlength="500"
-              placeholder="e.g., vegetarian, no nuts, low-carb"
-              aria-label="Enter your dietary preferences"
-            />
-          </div>
-
-          <!-- Budget & People Row -->
-          <div class="form-row">
+          <!-- Top Row: Day Type, Diet, Cuisine -->
+          <div class="form-row form-row--3">
             <div class="form-group">
-              <label for="budget" class="form-label">
-                <span class="form-label__icon" aria-hidden="true">💰</span>
-                Budget
+              <label for="day-type" class="form-label">
+                Day type
               </label>
-              <div class="input-with-prefix">
-                <span class="input-prefix" aria-hidden="true">₹</span>
-                <input
-                  type="number"
-                  id="budget"
-                  name="budget"
-                  class="form-control form-control--prefixed"
-                  value="500"
-                  min="1"
-                  step="10"
-                  aria-label="Budget in Indian Rupees"
-                  aria-required="true"
-                  required
-                />
-              </div>
+              <select id="day-type" name="day_type" class="form-control" aria-label="Select day type" required>
+                <option value="Busy workday">Busy workday</option>
+                <option value="Relaxed weekend">Relaxed weekend</option>
+                <option value="Work from home">Work from home</option>
+                <option value="Special occasion">Special occasion</option>
+              </select>
             </div>
 
             <div class="form-group">
+              <label for="diet" class="form-label">
+                Diet
+              </label>
+              <select id="diet" name="diet" class="form-control" aria-label="Select diet" required>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Non-vegetarian">Non-vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Eggetarian">Eggetarian</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="cuisine" class="form-label">
+                Cuisine
+              </label>
+              <select id="cuisine" name="cuisine" class="form-control" aria-label="Select cuisine" required>
+                <option value="Indian">Indian</option>
+                <option value="Bengali">Bengali</option>
+                <option value="Continental">Continental</option>
+                <option value="Mixed">Mixed</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bottom Row: People, Budget, Ingredients at home -->
+          <div class="form-row form-row--3">
+            <div class="form-group">
               <label for="num-people" class="form-label">
-                <span class="form-label__icon" aria-hidden="true">👥</span>
                 People
               </label>
               <input
@@ -123,6 +100,39 @@
                 required
               />
             </div>
+
+            <div class="form-group">
+              <label for="budget" class="form-label">
+                Daily budget (₹)
+              </label>
+              <input
+                type="number"
+                id="budget"
+                name="budget"
+                class="form-control"
+                value="500"
+                min="1"
+                step="10"
+                aria-label="Budget in Indian Rupees"
+                aria-required="true"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ingredients-home" class="form-label">
+                Ingredients at home
+              </label>
+              <input
+                type="text"
+                id="ingredients-home"
+                name="ingredients_at_home"
+                class="form-control"
+                maxlength="500"
+                placeholder="rice, onions, tomatoes"
+                aria-label="Enter ingredients available at home"
+              />
+            </div>
           </div>
 
           <!-- Submit -->
@@ -132,7 +142,7 @@
             class="btn btn--primary"
             aria-label="Generate meal plan"
           >
-            <span class="btn__text">✨ Generate Meal Plan</span>
+            <span class="btn__text">✨ Generate cooking plan ↗</span>
             <span class="btn__loader" aria-hidden="true">
               <span class="spinner"></span>
               Cooking up ideas…

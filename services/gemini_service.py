@@ -39,10 +39,12 @@ def _build_prompt(request: MealPlanRequest) -> str:
     """
     return f"""You are a professional meal planner and nutritionist. Generate a complete daily meal plan based on the following requirements:
 
-**Dietary Preferences:** {request.dietary_preferences}
+**Day Type:** {request.day_type}
+**Diet:** {request.diet}
+**Cuisine:** {request.cuisine}
+**Ingredients at Home:** {request.ingredients_at_home}
 **Budget:** ₹{request.budget:.2f}
 **Number of People:** {request.num_people}
-**Day Context:** {request.day_context}
 
 Return ONLY a valid JSON object (no markdown, no code fences, no extra text) with this exact structure:
 

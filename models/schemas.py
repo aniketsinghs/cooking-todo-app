@@ -15,10 +15,17 @@ class MealPlanRequest(BaseModel):
     information to tailor the generated meal plan.
     """
 
-    dietary_preferences: str = Field(
+    day_type: str = Field(
         ...,
-        max_length=500,
-        description="Dietary preferences or restrictions (e.g., 'vegetarian, gluten-free').",
+        description="Type of day (e.g., 'Busy workday', 'Relaxed weekend').",
+    )
+    diet: str = Field(
+        ...,
+        description="Dietary preferences (e.g., 'Vegetarian', 'Vegan').",
+    )
+    cuisine: str = Field(
+        ...,
+        description="Cuisine preference (e.g., 'Indian', 'Continental').",
     )
     budget: float = Field(
         ...,
@@ -31,10 +38,10 @@ class MealPlanRequest(BaseModel):
         le=20,
         description="Number of people to plan meals for (1-20).",
     )
-    day_context: str = Field(
-        ...,
+    ingredients_at_home: str = Field(
+        default="",
         max_length=1000,
-        description="Context about the day to help tailor meals (e.g., 'busy workday, need quick meals').",
+        description="Ingredients available at home (e.g., 'rice, onions, tomatoes').",
     )
 
 

@@ -29,15 +29,20 @@ def _validate_input_lengths(request: MealPlanRequest) -> None:
     Raises:
         HTTPException: If any field exceeds its allowed length.
     """
-    if len(request.dietary_preferences.strip()) == 0:
+    if len(request.day_type.strip()) == 0:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Dietary preferences cannot be empty.",
+            detail="Day type cannot be empty.",
         )
-    if len(request.day_context.strip()) == 0:
+    if len(request.diet.strip()) == 0:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Day context cannot be empty.",
+            detail="Diet cannot be empty.",
+        )
+    if len(request.cuisine.strip()) == 0:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Cuisine cannot be empty.",
         )
 
 
@@ -72,7 +77,7 @@ async def create_meal_plan(request: MealPlanRequest) -> MealPlanResponse:
         "Received meal plan request: %d people, budget $%.2f, preferences='%s'.",
         request.num_people,
         request.budget,
-        request.dietary_preferences[:50],
+        request.diet[:50],
     )
 
     try:

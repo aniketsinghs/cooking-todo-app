@@ -123,10 +123,12 @@ Navigate to **http://localhost:8000** and start planning your meals! 🎉
 
 ```json
 {
-  "dietary_preferences": "vegetarian, no nuts",
+  "day_type": "Busy workday",
+  "diet": "Vegetarian",
+  "cuisine": "Indian",
   "budget": 500.0,
   "num_people": 2,
-  "day_context": "Busy workday, need quick and healthy meals"
+  "ingredients_at_home": "rice, onions, tomatoes"
 }
 ```
 

@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── DOM References (getElementById for perf) ───
   const form              = document.getElementById('meal-plan-form');
   const submitBtn         = document.getElementById('submit-btn');
-  const dayContext        = document.getElementById('day-context');
-  const dayContextCount   = document.getElementById('day-context-count');
-  const dietaryPrefs      = document.getElementById('dietary-preferences');
+  const dayType           = document.getElementById('day-type');
+  const diet              = document.getElementById('diet');
+  const cuisine           = document.getElementById('cuisine');
+  const ingredientsHome   = document.getElementById('ingredients-home');
   const budgetInput       = document.getElementById('budget');
   const numPeopleInput    = document.getElementById('num-people');
   const errorMessage      = document.getElementById('error-message');
@@ -26,11 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const subsSection       = document.getElementById('substitutions-section');
   const subsCards         = document.getElementById('substitutions-cards');
   const budgetBreakdown   = document.getElementById('budget-breakdown');
-
-  // ─── Character Counter ───
-  dayContext.addEventListener('input', () => {
-    dayContextCount.textContent = dayContext.value.length;
-  });
 
   // ─── Error Dismiss ───
   errorDismiss.addEventListener('click', () => hideElement('error-message'));
@@ -50,15 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     hideElement('results-container');
 
     // Validate
-    const context = dayContext.value.trim();
-    const budget  = parseFloat(budgetInput.value);
-    const people  = parseInt(numPeopleInput.value, 10);
-
-    if (!context) {
-      showError('Please describe your day so we can plan meals for you.');
-      dayContext.focus();
-      return;
-    }
+    const typeOfDay = dayType.value;
+    const dietVal   = diet.value;
+    const cuisineVal = cuisine.value;
+    const homeIng   = ingredientsHome.value.trim();
+    const budget    = parseFloat(budgetInput.value);
+    const people    = parseInt(numPeopleInput.value, 10);
 
     if (isNaN(budget) || budget <= 0) {
       showError('Please enter a valid budget greater than ₹0.');
@@ -74,8 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Build payload
     const payload = {
-      day_context: context,
-      dietary_preferences: dietaryPrefs.value.trim(),
+      day_type: typeOfDay,
+      diet: dietVal,
+      cuisine: cuisineVal,
+      ingredients_at_home: homeIng,
       budget: budget,
       num_people: people,
     };

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI-powered cooking to-do list that generates personalized meal plans, grocery lists, and budget breakdowns based on your preferences." />
+  <title>AI Cooking To-Do List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ─── Ambient Background Blobs ─── -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="blob blob--1"></div>
+    <div class="blob blob--2"></div>
+    <div class="blob blob--3"></div>
+  </div>
+
+  <!-- ─── Header ─── -->
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <span class="brand__icon" aria-hidden="true">🍳</span>
+        <div>
+          <h1 class="brand__title">AI Cooking To-Do List</h1>
+          <p class="brand__tagline">Smart meals. Zero stress.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main Content ─── -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- ── Input Form Section ── -->
+      <section class="form-section" aria-labelledby="form-heading">
+        <h2 id="form-heading" class="section-title">Plan Your Day</h2>
+        <p class="section-subtitle">Tell us about your day and we'll craft the perfect meal plan for you.</p>
+
+        <form id="meal-plan-form" class="meal-form glass-card" aria-label="Meal plan generator form" novalidate>
+          <!-- Day Context -->
+          <div class="form-group">
+            <label for="day-context" class="form-label">
+              <span class="form-label__icon" aria-hidden="true">📅</span>
+              What's your day like?
+            </label>
+            <textarea
+              id="day-context"
+              name="day_context"
+              class="form-control"
+              rows="3"
+              maxlength="1000"
+              placeholder="Describe your day… e.g., Busy workday, need quick healthy meals"
+              aria-label="Describe your day context for meal planning"
+              aria-required="true"
+              required
+            ></textarea>
+            <span class="form-hint" id="day-context-hint">
+              <span id="day-context-count">0</span>/1000 characters
+            </span>
+          </div>
+
+          <!-- Dietary Preferences -->
+          <div class="form-group">
+            <label for="dietary-preferences" class="form-label">
+              <span class="form-label__icon" aria-hidden="true">🥗</span>
+              Dietary Preferences
+            </label>
+            <input
+              type="text"
+              id="dietary-preferences"
+              name="dietary_preferences"
+              class="form-control"
+              maxlength="500"
+              placeholder="e.g., vegetarian, no nuts, low-carb"
+              aria-label="Enter your dietary preferences"
+            />
+          </div>
+
+          <!-- Budget & People Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="budget" class="form-label">
+                <span class="form-label__icon" aria-hidden="true">💰</span>
+                Budget
+              </label>
+              <div class="input-with-prefix">
+                <span class="input-prefix" aria-hidden="true">₹</span>
+                <input
+                  type="number"
+                  id="budget"
+                  name="budget"
+                  class="form-control form-control--prefixed"
+                  value="500"
+                  min="1"
+                  step="10"
+                  aria-label="Budget in Indian Rupees"
+                  aria-required="true"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="num-people" class="form-label">
+                <span class="form-label__icon" aria-hidden="true">👥</span>
+                People
+              </label>
+              <input
+                type="number"
+                id="num-people"
+                name="num_people"
+                class="form-control"
+                value="2"
+                min="1"
+                max="20"
+                aria-label="Number of people to cook for"
+                aria-required="true"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            id="submit-btn"
+            class="btn btn--primary"
+            aria-label="Generate meal plan"
+          >
+            <span class="btn__text">✨ Generate Meal Plan</span>
+            <span class="btn__loader" aria-hidden="true">
+              <span class="spinner"></span>
+              Cooking up ideas…
+            </span>
+          </button>
+        </form>
+      </section>
+
+      <!-- ── Error Message ── -->
+      <div id="error-message" class="error-banner glass-card" role="alert" aria-live="polite" hidden>
+        <span class="error-banner__icon" aria-hidden="true">⚠️</span>
+        <p id="error-text">Something went wrong. Please try again.</p>
+        <button id="error-dismiss" class="error-banner__close" aria-label="Dismiss error">&times;</button>
+      </div>
+
+      <!-- ── Results Container (hidden until data arrives) ── -->
+      <div id="results-container" class="results" hidden>
+
+        <!-- Meal Plan -->
+        <section class="results-section" aria-labelledby="meals-heading">
+          <h2 id="meals-heading" class="section-title">🍽️ Your Meal Plan</h2>
+          <div id="meal-plan-cards" class="card-grid" role="list" aria-label="Meal plan cards"></div>
+        </section>
+
+        <!-- Grocery List -->
+        <section class="results-section" aria-labelledby="grocery-heading">
+          <h2 id="grocery-heading" class="section-title">🛒 Grocery List</h2>
+          <div class="table-wrapper glass-card">
+            <table id="grocery-table" class="data-table" aria-label="Grocery list table">
+              <thead>
+                <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Cost</th>
+                  <th scope="col">Category</th>
+                </tr>
+              </thead>
+              <tbody id="grocery-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Substitutions -->
+        <section id="substitutions-section" class="results-section" aria-labelledby="subs-heading" hidden>
+          <h2 id="subs-heading" class="section-title">🔄 Smart Substitutions</h2>
+          <div id="substitutions-cards" class="card-grid" role="list" aria-label="Substitution suggestion cards"></div>
+        </section>
+
+        <!-- Budget Breakdown -->
+        <section class="results-section" aria-labelledby="budget-heading">
+          <h2 id="budget-heading" class="section-title">📊 Budget Breakdown</h2>
+          <div id="budget-breakdown" class="budget-card glass-card" aria-label="Budget breakdown details"></div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── Footer ─── -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built with 💚 for <strong>PromptWars</strong> &middot; Powered by <strong>Gemini AI</strong></p>
+      <p class="footer-hint">Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to generate</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

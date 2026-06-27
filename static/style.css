@@ -328,6 +328,10 @@ textarea.form-control {
   gap: var(--sp-lg);
 }
 
+.form-row--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 /* Input with currency prefix */
 .input-with-prefix {
   position: relative;

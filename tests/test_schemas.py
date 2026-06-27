@@ -24,12 +24,14 @@ class TestMealPlanRequest:
     def test_valid_request(self) -> None:
         """A fully valid request should be created without errors."""
         request = MealPlanRequest(
-            dietary_preferences="vegetarian",
+            day_type="Busy workday",
+            diet="Vegetarian",
+            cuisine="Indian",
             budget=500.0,
             num_people=2,
-            day_context="Busy workday, need quick meals",
+            ingredients_at_home="rice, dal",
         )
-        assert request.dietary_preferences == "vegetarian"
+        assert request.diet == "Vegetarian"
         assert request.budget == 500.0
         assert request.num_people == 2
 
@@ -37,61 +39,59 @@ class TestMealPlanRequest:
         """Budget of zero or negative should be rejected."""
         with pytest.raises(ValidationError):
             MealPlanRequest(
-                dietary_preferences="any",
+                day_type="Busy workday",
+                diet="Any",
+                cuisine="Any",
                 budget=0,
                 num_people=2,
-                day_context="test",
             )
 
     def test_budget_negative_rejected(self) -> None:
         """Negative budget should be rejected."""
         with pytest.raises(ValidationError):
             MealPlanRequest(
-                dietary_preferences="any",
+                day_type="Busy workday",
+                diet="Any",
+                cuisine="Any",
                 budget=-100,
                 num_people=2,
-                day_context="test",
             )
 
     def test_num_people_minimum(self) -> None:
         """Number of people below 1 should be rejected."""
         with pytest.raises(ValidationError):
             MealPlanRequest(
-                dietary_preferences="any",
+                day_type="Busy workday",
+                diet="Any",
+                cuisine="Any",
                 budget=500,
                 num_people=0,
-                day_context="test",
             )
 
     def test_num_people_maximum(self) -> None:
         """Number of people above 20 should be rejected."""
         with pytest.raises(ValidationError):
             MealPlanRequest(
-                dietary_preferences="any",
+                day_type="Busy workday",
+                diet="Any",
+                cuisine="Any",
                 budget=500,
                 num_people=21,
-                day_context="test",
             )
 
-    def test_day_context_max_length(self) -> None:
-        """Day context exceeding 1000 characters should be rejected."""
+    def test_ingredients_max_length(self) -> None:
+        """Ingredients exceeding 1000 characters should be rejected."""
         with pytest.raises(ValidationError):
             MealPlanRequest(
-                dietary_preferences="any",
+                day_type="Busy workday",
+                diet="Any",
+                cuisine="Any",
                 budget=500,
                 num_people=2,
-                day_context="x" * 1001,
+                ingredients_at_home="x" * 1001,
             )
 
-    def test_dietary_preferences_max_length(self) -> None:
-        """Dietary preferences exceeding 500 characters should be rejected."""
-        with pytest.raises(ValidationError):
-            MealPlanRequest(
-                dietary_preferences="x" * 501,
-                budget=500,
-                num_people=2,
-                day_context="test",
-            )
+
 
 
 class TestGroceryItem:
